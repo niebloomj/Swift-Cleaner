@@ -2,6 +2,8 @@ import fileinput
 import os
 import sys
 
+shouldFixLongLines = False
+
 for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 	for file in files:
 		if file.endswith(".swift"):
@@ -103,20 +105,24 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 							newdata[x] = newdata[x][:index + 1] + " " + newdata[x][index + 1:]
 					except Exception as e:
 						pass
-				if len(newdata[x]) > 80 and "//" not in newdata[x]:
-					if '"' in newdata[x]:
-						newdata[x] = newdata[x] + " //Line has too many characters says SwiftCleaner"
-					elif "," in newdata[x]:
-						index = newdata[x].find(",")
-						newdata[x] = newdata[x][:index + 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index + 1:]
-					elif "->" in newdata[x]:
-						index = newdata[x].find("->")
-						newdata[x] = newdata[x][:index - 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index - 1:]
-					elif " = " in newdata[x]:
-						index = newdata[x].find("=")
-						newdata[x] = newdata[x][:index + 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index + 1:]
-					else:
-						newdata[x] = newdata[x] + " //Line has too many characters says SwiftCleaner"
+				if (shouldFixLongLines):
+					if len(newdata[x]) > 80 and "//" not in newdata[x]:
+						if '"' in newdata[x]:
+							pass
+							# newdata[x] = newdata[x] + " //Line has too many characters says SwiftCleaner"
+						elif "," in newdata[x]:
+							index = newdata[x].find(",")
+							newdata[x] = newdata[x][:index + 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index + 1:]
+						elif "->" in newdata[x]:
+							index = newdata[x].find("->")
+							newdata[x] = newdata[x][:index - 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index - 1:]
+						elif " = " in newdata[x]:
+							index = newdata[x].find("=")
+							newdata[x] = newdata[x][:index + 1] + "\n" + ("\t" * (newdata[x].count("\t") + 2))  + newdata[x][index + 1:]
+						else:
+							pass
+							# print("Could not fix line")
+							# newdata[x] = newdata[x] + " //Line has too many characters says SwiftCleaner"
 
 			newdata = "\n".join(str(x) for x in newdata)
 			newdata = newdata.replace("    ", "\t")
