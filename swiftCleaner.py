@@ -51,16 +51,21 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 							newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
 					except Exception as e:
 						pass
-				if ":" in newdata[x] and '"' not in newdata[x]:
-					index = newdata[x].find(":")
-					try:
-						if newdata[x][index - 1] != " ":
-							newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
-						index = newdata[x].find(":")
-						if newdata[x][index + 1] != " ":
-							newdata[x] = newdata[x][:index + 1] + " " + newdata[x][index+ 1:]
-					except Exception as e:
-						pass
+				charactersToHaveSpacesOnBothSides = [":", ",", "==", "="]
+				for character in charactersToHaveSpacesOnBothSides:
+					if character in newdata[x]:
+						index = newdata[x].find(character)
+						while (index != -1):
+							if (len(newdata[x]) > index + len(character)):
+								if (not (character == "=" and ("==" in newdata[x] or "!=" in newdata[x]))):
+									if newdata[x][index + len(character)] != " ":
+											newdata[x] = newdata[x][:index + len(character)] + " " + newdata[x][index + len(character):]
+									if character != ",":
+										if newdata[x][index  - 1] != " ":
+											newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
+								index = newdata[x].find(character, index + len(character))
+							else:
+								break
 				if "->" in newdata[x]:
 					index = newdata[x].find("->")
 					try:
@@ -76,33 +81,6 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 					try:
 						if newdata[x][index - 1] != " ":
 							newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
-					except Exception as e:
-						pass
-				if "==" in newdata[x]:
-					index = newdata[x].find("==")
-					try:
-						if newdata[x][index - 1] != " ":
-							newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
-						index = newdata[x].find("==")
-						if newdata[x][index + 2] != " ":
-							newdata[x] = newdata[x][:index + 2] + " " + newdata[x][index+ 2:]
-					except Exception as e:
-						pass
-				if "=" in newdata[x] and '"' not in newdata[x] and "==" not in newdata[x] and "!=" not in newdata[x] and "+=" not in newdata[x] and "-=" not in newdata[x] and "<=" not in newdata[x] and ">=" not in newdata[x]:
-					index = newdata[x].find("=")
-					try:
-						if newdata[x][index - 1] != " ":
-							newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
-						index = newdata[x].find("=")
-						if newdata[x][index + 1] != " ":
-							newdata[x] = newdata[x][:index + 1] + " " + newdata[x][index+ 1:]
-					except Exception as e:
-						pass
-				if "," in newdata[x]:
-					index = newdata[x].find(",")
-					try:
-						if newdata[x][index + 1] != " ":
-							newdata[x] = newdata[x][:index + 1] + " " + newdata[x][index + 1:]
 					except Exception as e:
 						pass
 				if (shouldFixLongLines):
