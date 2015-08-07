@@ -68,8 +68,10 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 						while (index != -1):
 							if (len(newdata[x]) > index + len(character)):
 								if (not (character == "=" and ("==" in newdata[x] or "!=" in newdata[x] or "+=" in newdata[x] or "-=" in newdata[x] or "<=" in newdata[x] or ">=" in newdata[x]))):
+									#Is Next Space
 									if newdata[x][index + len(character)] != " " and newdata[x][index + len(character)] != "\t":
-											newdata[x] = newdata[x][:index + len(character)] + " " + newdata[x][index + len(character):]
+										newdata[x] = newdata[x][:index + len(character)] + " " + newdata[x][index + len(character):]
+									#Is Previous Space
 									if character != ",":
 										if newdata[x][index  - 1] != " " and newdata[x][index  - 1] != "\t":
 											newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
