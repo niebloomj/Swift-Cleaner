@@ -27,8 +27,10 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 				# This is explain below more. Maybe we should start implementing this.
 				# newdata[x] = " ".join(newdata[x].split())
 				x = temp + 14
-				if "\t" == newdata[x] or "\t\t" == newdata[x] or "\t\t\t" == newdata[x] or "\t\t\t\t" == newdata[x] or "\t\t\t\t\t" == newdata[x] or "\t\t\t\t\t\t" == newdata[x] or "\t\t\t\t\t\t\t" == newdata[x] or "\t" * 8 == newdata[x] or "\t" * 9 == newdata[x] or "\t" * 10 == newdata[x] or "\t" * 11 == newdata[x]:
+				if not newdata[x].strip():
 					newdata[x] = ""
+				# if "\t" == newdata[x] or "\t\t" == newdata[x] or "\t\t\t" == newdata[x] or "\t\t\t\t" == newdata[x] or "\t\t\t\t\t" == newdata[x] or "\t\t\t\t\t\t" == newdata[x] or "\t\t\t\t\t\t\t" == newdata[x] or "\t" * 8 == newdata[x] or "\t" * 9 == newdata[x] or "\t" * 10 == newdata[x] or "\t" * 11 == newdata[x]:
+				#	newdata[x] = ""
 				if "*" in newdata[x]:
 					continue
 				if "///" in newdata[x]:
@@ -75,6 +77,9 @@ for root, dirs, files in os.walk(os.path.dirname(os.path.abspath(__file__))):
 									if character != ",":
 										if newdata[x][index  - 1] != " " and newdata[x][index  - 1] != "\t":
 											newdata[x] = newdata[x][:index] + " " + newdata[x][index:]
+									else:
+										if newdata[x][index - 1] == " ":
+											newdata[x] = newdata[x][:index-1] + newdata[x][index:]
 								index = newdata[x].find(character, index + len(character) + 1)
 							else:
 								break
